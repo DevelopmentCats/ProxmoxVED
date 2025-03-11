@@ -47,12 +47,12 @@ DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c16)
 AUTH_SECRET_KEY=$(openssl rand -hex 32)
 
 # Secure MySQL installation
-mysql -e "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_ROOT_PASSWORD') WHERE User='root'"
-mysql -e "DELETE FROM mysql.user WHERE User=''"
-mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-mysql -e "DROP DATABASE IF EXISTS test"
-mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
-mysql -e "FLUSH PRIVILEGES"
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "DELETE FROM mysql.user WHERE User=''"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "DROP DATABASE IF EXISTS test"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES"
 
 # Create RomM database and user
 mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
