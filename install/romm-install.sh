@@ -27,8 +27,16 @@ $STD apt-get install -y \
     redis-server \
     python3 \
     python3-pip \
-    python3-venv
+    python3-venv \
+    software-properties-common
 msg_ok "Installed System Dependencies"
+
+msg_info "Installing Python 3.12"
+# Add deadsnakes PPA for newer Python versions
+add-apt-repository -y ppa:deadsnakes/ppa
+$STD apt-get update
+$STD apt-get install -y python3.12 python3.12-venv python3.12-dev
+msg_ok "Installed Python 3.12"
 
 msg_info "Setting up Node.js Repository"
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
@@ -94,8 +102,8 @@ git clone https://github.com/rommapp/romm.git /opt/romm/app
 msg_ok "Cloned RomM Repository"
 
 msg_info "Setting up Python Environment"
-# Set up Python virtual environment
-python3 -m venv /opt/romm/venv
+# Set up Python virtual environment with Python 3.12
+python3.12 -m venv /opt/romm/venv
 source /opt/romm/venv/bin/activate
 pip install --upgrade pip
 pip install poetry
@@ -104,6 +112,8 @@ msg_ok "Set up Python Environment"
 msg_info "Installing Backend Dependencies"
 # Install backend dependencies
 cd /opt/romm/app
+# Tell poetry to use Python 3.12 explicitly
+poetry env use python3.12
 poetry install
 msg_ok "Installed Backend Dependencies"
 
