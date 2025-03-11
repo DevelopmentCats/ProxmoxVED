@@ -113,7 +113,6 @@ cd /opt/romm/backend
 $STD poetry install --only=main --no-ansi --no-interaction --no-root
 $STD poetry export --without-hashes --without-urls -f requirements.txt --output requirements.txt
 $STD pip install --no-cache-dir -r requirements.txt
-$STD pip install .
 
 cd /opt/romm/frontend
 $STD npm ci
