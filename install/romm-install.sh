@@ -168,9 +168,6 @@ $STD apt-get install -y python3.12 python3.12-venv python3.12-dev
 # Install pip for Python 3.12
 $STD curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 
-# Create symlinks
-ln -sf /usr/bin/python3.12 /usr/bin/python3
-ln -sf /usr/bin/python3 /usr/bin/python
 msg_ok "Installed Python ${PYTHON_VERSION}"
 
 msg_info "Installing Poetry"
