@@ -26,12 +26,11 @@ $STD apt-get install -y \
     mariadb-server \
     libmariadb3 \
     libmariadb-dev \
-    mariadb-connector-c \
     python3 \
     python3-pip \
     redis-server \
     gcc \
-    libc-dev \
+    libc6-dev \
     make \
     p7zip \
     tzdata
