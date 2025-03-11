@@ -4,6 +4,7 @@ source <(curl -s https://raw.githubusercontent.com/community-scripts/ProxmoxVED/
 # Author: DevelopmentCats
 # License: MIT | https://github.com/community-scripts/ProxmoxVED/raw/main/LICENSE
 # Source: https://romm.app
+# Updated: 03/10/2025
 
 APP="RomM"
 var_tags="roms;games;emulation;manager"
@@ -50,7 +51,7 @@ function update_script() {
     npm install
     npm run build
 
-    echo "Updated on $(date)" > /opt/romm/version.txt
+    echo "Updated on $(date)" >/opt/romm/version.txt
     msg_ok "Updated $APP"
 
     msg_info "Starting $APP"
