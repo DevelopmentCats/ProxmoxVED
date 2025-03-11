@@ -7,7 +7,7 @@ source <(curl -s https://raw.githubusercontent.com/DevelopmentCats/ProxmoxVED/ma
 # Updated: 03/10/2025
 
 APP="RomM"
-var_tags="roms;games;emulation;manager"
+var_tags="emulation;manager"
 var_cpu="2"
 var_ram="4096"
 var_disk="20"

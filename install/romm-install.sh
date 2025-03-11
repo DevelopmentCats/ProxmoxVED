@@ -176,13 +176,14 @@ msg_ok "Installed Python ${PYTHON_VERSION}"
 msg_info "Installing Poetry"
 # Install pipx first
 $STD python3.12 -m pip install --user pipx
+export PATH="$PATH:/root/.local/bin"
 $STD python3.12 -m pipx ensurepath
 
 # Install Poetry using pipx
 $STD python3.12 -m pipx install poetry
 
-# Configure Poetry
-poetry config virtualenvs.in-project true
+# Configure Poetry (add full path to poetry command)
+/root/.local/bin/poetry config virtualenvs.in-project true
 msg_ok "Installed Poetry"
 
 #########################################
@@ -374,7 +375,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/usr/local/bin/poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${BACKEND_PORT}
+ExecStart=/root/.local/bin/poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${BACKEND_PORT}
 Restart=on-failure
 RestartSec=5s
 
@@ -394,7 +395,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/usr/local/bin/poetry run python3 worker.py
+ExecStart=/root/.local/bin/poetry run python3 worker.py
 Restart=on-failure
 RestartSec=5s
 
@@ -414,7 +415,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/usr/local/bin/poetry run python3 scheduler.py
+ExecStart=/root/.local/bin/poetry run python3 scheduler.py
 Restart=on-failure
 RestartSec=5s
 
