@@ -32,11 +32,45 @@ $STD apt-get install -y \
 msg_ok "Installed System Dependencies"
 
 msg_info "Installing Python 3.12"
-# Add deadsnakes PPA for newer Python versions
-add-apt-repository -y ppa:deadsnakes/ppa
+# For Debian, we'll use the official Python source
+# Add Python repository for Debian
+echo "deb http://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/bookworm-backports.list
 $STD apt-get update
-$STD apt-get install -y python3.12 python3.12-venv python3.12-dev
-msg_ok "Installed Python 3.12"
+
+# Try installing from backports if available
+if $STD apt-get install -y -t bookworm-backports python3.12 python3.12-venv python3.12-dev; then
+    msg_ok "Installed Python 3.12 from backports"
+else
+    # If not available in backports, build from source
+    msg_info "Python 3.12 not available in backports, building from source"
+    $STD apt-get install -y \
+        build-essential \
+        libssl-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libncursesw5-dev \
+        xz-utils \
+        tk-dev \
+        libxml2-dev \
+        libxmlsec1-dev \
+        libffi-dev \
+        liblzma-dev
+
+    cd /tmp
+    wget https://www.python.org/ftp/python/3.12.4/Python-3.12.4.tgz
+    tar xzf Python-3.12.4.tgz
+    cd Python-3.12.4
+    ./configure --enable-optimizations
+    make -j $(nproc)
+    make altinstall
+    cd ..
+    rm -rf Python-3.12.4*
+    ln -sf /usr/local/bin/python3.12 /usr/bin/python3.12
+    ln -sf /usr/local/bin/pip3.12 /usr/bin/pip3.12
+    msg_ok "Installed Python 3.12 from source"
+fi
 
 msg_info "Setting up Node.js Repository"
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
@@ -102,7 +136,7 @@ git clone https://github.com/rommapp/romm.git /opt/romm/app
 msg_ok "Cloned RomM Repository"
 
 msg_info "Setting up Python Environment"
-# Set up Python virtual environment with Python 3.12
+# Set up Python virtual environment using Python 3.12
 python3.12 -m venv /opt/romm/venv
 source /opt/romm/venv/bin/activate
 pip install --upgrade pip
