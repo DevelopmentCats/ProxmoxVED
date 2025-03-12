@@ -321,12 +321,12 @@ msg_ok "Created environment configuration"
 
 msg_info "Installing backend dependencies"
 cd ${ROMM_INSTALL_DIR}
-su - ${ROMM_USER} -c "cd ${ROMM_INSTALL_DIR} && poetry install"
+su - ${ROMM_USER} -c "cd ${ROMM_INSTALL_DIR} && /usr/local/bin/poetry install"
 msg_ok "Installed backend dependencies"
 
 msg_info "Running database migrations"
 cd ${ROMM_BACKEND_DIR}
-su - ${ROMM_USER} -c "cd ${ROMM_BACKEND_DIR} && PYTHONPATH=${ROMM_INSTALL_DIR} poetry run alembic upgrade head"
+su - ${ROMM_USER} -c "cd ${ROMM_BACKEND_DIR} && PYTHONPATH=${ROMM_INSTALL_DIR} /usr/local/bin/poetry run alembic upgrade head"
 msg_ok "Database migrations completed"
 
 #########################################
