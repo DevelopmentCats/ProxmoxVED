@@ -321,12 +321,12 @@ msg_ok "Created environment configuration"
 
 msg_info "Installing backend dependencies"
 cd ${ROMM_INSTALL_DIR}
-su - ${ROMM_USER} -c "cd ${ROMM_INSTALL_DIR} && python3.12 -m poetry install"
+su - ${ROMM_USER} -c "cd ${ROMM_INSTALL_DIR} && poetry install"
 msg_ok "Installed backend dependencies"
 
 msg_info "Running database migrations"
 cd ${ROMM_BACKEND_DIR}
-su - ${ROMM_USER} -c "cd ${ROMM_BACKEND_DIR} && PYTHONPATH=${ROMM_INSTALL_DIR} python3.12 -m poetry run alembic upgrade head"
+su - ${ROMM_USER} -c "cd ${ROMM_BACKEND_DIR} && PYTHONPATH=${ROMM_INSTALL_DIR} poetry run alembic upgrade head"
 msg_ok "Database migrations completed"
 
 #########################################
@@ -371,7 +371,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/root/.local/bin/poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${BACKEND_PORT}
+ExecStart=/usr/local/bin/poetry run gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${BACKEND_PORT}
 Restart=on-failure
 RestartSec=5s
 
@@ -391,7 +391,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/root/.local/bin/poetry run python3 worker.py
+ExecStart=/usr/local/bin/poetry run python3 worker.py
 Restart=on-failure
 RestartSec=5s
 
@@ -411,7 +411,7 @@ Type=simple
 User=${ROMM_USER}
 WorkingDirectory=${ROMM_BACKEND_DIR}
 Environment="PYTHONPATH=${ROMM_INSTALL_DIR}"
-ExecStart=/root/.local/bin/poetry run python3 scheduler.py
+ExecStart=/usr/local/bin/poetry run python3 scheduler.py
 Restart=on-failure
 RestartSec=5s
 
