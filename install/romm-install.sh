@@ -172,20 +172,19 @@ $STD curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 msg_ok "Installed Python ${PYTHON_VERSION}"
 
 msg_info "Installing Poetry"
-# Install Poetry for the romm user
-# First create directory for romm user if not exists
-mkdir -p ${ROMM_DATA_DIR}/.local/bin
-chown -R ${ROMM_USER}:${ROMM_GROUP} ${ROMM_DATA_DIR}/.local
+# Install pipx system-wide
+$STD apt-get install -y pipx
+$STD pipx ensurepath
 
-# Install Poetry as the romm user
-su - ${ROMM_USER} -c "curl -sSL https://install.python-poetry.org | python3.12 -"
+# Install Poetry using pipx in a system-wide location
+$STD PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install poetry
 
-# Create a symlink in /usr/local/bin for system-wide access
-$STD ln -sf ${ROMM_DATA_DIR}/.local/bin/poetry /usr/local/bin/poetry
-chmod 755 /usr/local/bin/poetry
+# Set permissions so all users can access it
+$STD chmod -R 755 /opt/pipx
+$STD chmod 755 /usr/local/bin/poetry
 
-# Configure Poetry for the romm user
-su - ${ROMM_USER} -c "poetry config virtualenvs.in-project true"
+# Configure Poetry
+$STD poetry config virtualenvs.in-project true
 msg_ok "Installed Poetry"
 
 #########################################
