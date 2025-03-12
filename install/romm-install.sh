@@ -172,21 +172,20 @@ $STD curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 msg_ok "Installed Python ${PYTHON_VERSION}"
 
 msg_info "Installing Poetry"
-# Install Poetry globally so it's available to all users
-$STD curl -sSL https://install.python-poetry.org | python3.12 -
+# Install Poetry for the romm user
+# First create directory for romm user if not exists
+mkdir -p ${ROMM_DATA_DIR}/.local/bin
+chown -R ${ROMM_USER}:${ROMM_GROUP} ${ROMM_DATA_DIR}/.local
 
-# Add Poetry to system PATH by creating a symlink in /usr/local/bin
-$STD ln -sf /root/.local/bin/poetry /usr/local/bin/poetry
+# Install Poetry as the romm user
+su - ${ROMM_USER} -c "curl -sSL https://install.python-poetry.org | python3.12 -"
 
-# Set proper permissions for the Poetry executables
-$STD chmod 755 /root/.local/bin/poetry
-$STD chmod 755 /usr/local/bin/poetry
-# Also ensure the .local/bin directory is accessible
-$STD chmod 755 /root/.local
-$STD chmod 755 /root/.local/bin
+# Create a symlink in /usr/local/bin for system-wide access
+$STD ln -sf ${ROMM_DATA_DIR}/.local/bin/poetry /usr/local/bin/poetry
+chmod 755 /usr/local/bin/poetry
 
-# Configure Poetry
-$STD poetry config virtualenvs.in-project true
+# Configure Poetry for the romm user
+su - ${ROMM_USER} -c "poetry config virtualenvs.in-project true"
 msg_ok "Installed Poetry"
 
 #########################################
