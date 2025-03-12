@@ -103,7 +103,8 @@ $STD apt-get install -y \
     mariadb-client \
     redis-tools \
     p7zip \
-    tzdata
+    tzdata \
+    jq
 msg_ok "Installed core dependencies"
 
 msg_info "Creating ROMM user and group"
