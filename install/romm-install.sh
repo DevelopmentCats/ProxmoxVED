@@ -172,16 +172,14 @@ $STD curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 msg_ok "Installed Python ${PYTHON_VERSION}"
 
 msg_info "Installing Poetry"
-# Install pipx first
-$STD python3.12 -m pip install --user pipx
-export PATH="$PATH:/root/.local/bin"
-$STD python3.12 -m pipx ensurepath
+# Install Poetry globally so it's available to all users
+$STD curl -sSL https://install.python-poetry.org | python3.12 -
 
-# Install Poetry using pipx
-$STD python3.12 -m pipx install poetry
+# Add Poetry to system PATH by creating a symlink in /usr/local/bin
+$STD ln -sf /root/.local/bin/poetry /usr/local/bin/poetry
 
-# Configure Poetry (add full path to poetry command)
-/root/.local/bin/poetry config virtualenvs.in-project true
+# Configure Poetry
+$STD poetry config virtualenvs.in-project true
 msg_ok "Installed Poetry"
 
 #########################################
