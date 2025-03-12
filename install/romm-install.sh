@@ -178,6 +178,13 @@ $STD curl -sSL https://install.python-poetry.org | python3.12 -
 # Add Poetry to system PATH by creating a symlink in /usr/local/bin
 $STD ln -sf /root/.local/bin/poetry /usr/local/bin/poetry
 
+# Set proper permissions for the Poetry executables
+$STD chmod 755 /root/.local/bin/poetry
+$STD chmod 755 /usr/local/bin/poetry
+# Also ensure the .local/bin directory is accessible
+$STD chmod 755 /root/.local
+$STD chmod 755 /root/.local/bin
+
 # Configure Poetry
 $STD poetry config virtualenvs.in-project true
 msg_ok "Installed Poetry"
