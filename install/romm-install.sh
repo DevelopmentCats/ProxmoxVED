@@ -172,6 +172,10 @@ $STD curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 msg_ok "Installed Python ${PYTHON_VERSION}"
 
 msg_info "Installing Poetry"
+# Create pipx directories first
+mkdir -p /opt/pipx
+chmod 755 /opt/pipx
+
 # Install pipx system-wide
 $STD apt-get install -y pipx
 $STD pipx ensurepath
@@ -262,7 +266,7 @@ msg_info "Setting up ROMM repository"
 RELEASE=$(curl -s https://api.github.com/repos/rommapp/romm/tags | jq --raw-output '.[0].name')
 
 # Download and extract
-wget -q https://codeload.github.com/rommapp/romm/tar.gz/refs/tags/${RELEASE} -O - | tar -xz 
+wget -q https://codeload.github.com/rommapp/romm/tar.gz/refs/tags/${RELEASE} -O - | tar -xz
 mv romm-* ${ROMM_INSTALL_DIR}
 
 # Set appropriate permissions
