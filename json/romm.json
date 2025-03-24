@@ -28,8 +28,8 @@
         }
     ],
     "default_credentials": {
-        "username": null,
-        "password": null
+        "username": "romm",
+        "password": "changeme"
     },
     "notes": [
         "API Keys: For full functionality, you'll need API keys from IGDB, MobyGames, and/or SteamGridDB.",
